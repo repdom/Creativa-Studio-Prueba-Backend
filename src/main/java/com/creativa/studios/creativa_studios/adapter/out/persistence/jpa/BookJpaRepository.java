@@ -59,12 +59,16 @@ public class BookJpaRepository implements BookRepository {
     }
 
     @Override
-    public Page<Book> getAllPagination(int page, int size, String sortBy, String sortDir) {
+    public Page<Book> getAllPagination(int page, int size, String sortBy, String sortDir, String title) {
         Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.ofSize(size).withPage(page).withSort(sort);
-
+        Page<BookJpaEntity> bookJpaEntitiesPage;
+        if (title != null && !title.isEmpty()) {
+            bookJpaEntitiesPage = this.bookJpaSpringRepository.findByTitleContaining(title, pageable);
+        } else {
+            bookJpaEntitiesPage = this.bookJpaSpringRepository.findAll(pageable);
+        }
 //        Pageable pageable = Pageable.ofSize(size).withPage(page).withSort(sort);
-        Page<BookJpaEntity> bookJpaEntitiesPage = this.bookJpaSpringRepository.findAll(pageable);
 
         List<Book> books = bookJpaEntitiesPage.getContent().stream().map(BookMapper::toDomain).toList();
 

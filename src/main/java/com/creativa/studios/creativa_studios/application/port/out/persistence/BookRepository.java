@@ -12,5 +12,5 @@ public interface BookRepository {
     long delete(long id);
     Book save(Book book);
     Book update(Book book);
-    Page<Book> getAllPagination(int page, int size, String sortBy, String sortDir);
+    Page<Book> getAllPagination(int page, int size, String sortBy, String sortDir, String title);
 }

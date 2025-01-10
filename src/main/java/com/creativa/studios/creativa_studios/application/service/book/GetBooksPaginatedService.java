@@ -13,7 +13,7 @@ public class GetBooksPaginatedService implements GetBooksPaginatedUseCase {
     }
 
     @Override
-    public Page<Book> getAllPagination(int page, int size, String sortBy, String sortDir) {
-        return this.bookRepository.getAllPagination(page, size, sortBy, sortDir);
+    public Page<Book> getAllPagination(int page, int size, String sortBy, String sortDir, String title) {
+        return this.bookRepository.getAllPagination(page, size, sortBy, sortDir, title);
     }
 }

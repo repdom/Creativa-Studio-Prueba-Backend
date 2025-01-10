@@ -28,9 +28,10 @@ public class GetBooksPaginatedController {
             @RequestParam(defaultValue = "0", required = true) int page,
             @RequestParam(defaultValue = "10", required = true) int size,
             @RequestParam(defaultValue = "id", required = false) String sortBy,
-            @RequestParam(defaultValue = "asc", required = false) String sortDir
+            @RequestParam(defaultValue = "asc", required = false) String sortDir,
+            @RequestParam(required = false) String title
     ) {
-        Page<Book> bookPage = this.getBooksPaginatedUseCase.getAllPagination(page, size, sortBy, sortDir);
+        Page<Book> bookPage = this.getBooksPaginatedUseCase.getAllPagination(page, size, sortBy, sortDir, title);
         log.info("Book: {}", bookPage);
         return ResponseEntity.ok(new PageImpl<>(bookPage.getContent().stream().map(book -> BookWebModel.builder()
                 .author(book.author())
