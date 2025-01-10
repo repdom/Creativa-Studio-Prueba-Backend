@@ -40,4 +40,9 @@ public class BeanConfiguration {
     public UpdateBookUseCase updateBookUseCase(BookRepository bookRepository) {
         return new UpdateBookService(bookRepository);
     }
+
+    @Bean
+    public GetBooksPaginatedUseCase getBooksPaginatedUseCase(BookRepository bookRepository) {
+        return new GetBooksPaginatedService(bookRepository);
+    }
 }

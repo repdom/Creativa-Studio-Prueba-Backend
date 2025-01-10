@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*") // Allow all origins for this controller
 @RestController
 @Slf4j
 public class UpdateBookController {

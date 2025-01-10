@@ -2,6 +2,7 @@ package com.creativa.studios.creativa_studios.adapter.out.persistence.jpa;
 
 import com.creativa.studios.creativa_studios.application.port.out.persistence.BookRepository;
 import com.creativa.studios.creativa_studios.model.book.Book;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -55,5 +56,22 @@ public class BookJpaRepository implements BookRepository {
             return BookMapper.toDomain(bookPersisted);
         }
         return null;
+    }
+
+    @Override
+    public Page<Book> getAllPagination(int page, int size, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.ofSize(size).withPage(page).withSort(sort);
+
+//        Pageable pageable = Pageable.ofSize(size).withPage(page).withSort(sort);
+        Page<BookJpaEntity> bookJpaEntitiesPage = this.bookJpaSpringRepository.findAll(pageable);
+
+        List<Book> books = bookJpaEntitiesPage.getContent().stream().map(BookMapper::toDomain).toList();
+
+        if (!books.isEmpty()) {
+            return new PageImpl<>(books, pageable, bookJpaEntitiesPage.getTotalElements());
+        }
+
+        return new PageImpl<>(List.of(), pageable, bookJpaEntitiesPage.getTotalElements());
     }
 }
